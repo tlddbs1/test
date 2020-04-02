@@ -1,0 +1,69 @@
+buildscript {
+	ext {
+		springBootVersion = '2.2.6.RELEASE'
+	}
+	
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+		classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.0.5"
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'checkstyle'
+	apply plugin: 'com.github.spotbugs'
+	
+	group = 'com.gradle'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '1.8'
+	
+	compileJava.options.encoding = 'UTF-8'
+	javadoc.options.encoding = 'UTF-8'
+	
+	checkstyle {
+		toolVersion "7.6.1"
+		configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+	}
+	
+	spotbugsMain {
+		reports {
+			html {
+				enabled = true
+			}
+		}
+	}
+	
+	repositories {
+		mavenCentral()
+	}
+	
+	task initSourceFolder {
+		sourceSets*.java.srcDirs*.each{
+			if(!it.exists()) {
+				it.mkdirs()
+			}
+		}
+		
+		sourceSets*.resources.srcDirs*.each{
+			if(!it.exists()) {
+				it.mkdirs()
+			}
+		}
+	}
+	
+	dependencies {
+		compileOnly('org.projectlombok:lombok')
+	}
+}
