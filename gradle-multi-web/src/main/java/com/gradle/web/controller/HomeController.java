@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,11 +43,24 @@ public class HomeController {
 		return "input";
 	}
 	
+	/**
+	 * <p>서비스 ajax</p>
+	 * @return String url
+	 */
 	@PostMapping("/data/test")
 	public @ResponseBody String dataTest(@RequestBody Map<String, Object> params) {
 		String result = testService.dataInfo(params.get("name").toString()
 										, params.get("phone").toString());
 		return result;
+	}
+	
+	/**
+	 * <p>테스트 페이지</p>
+	 * @return String url
+	 */
+	@GetMapping("/test")
+	public String test() {
+		return "test";
 	}
 	
 	
