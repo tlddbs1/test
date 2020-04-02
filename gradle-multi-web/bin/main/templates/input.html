@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>index</title>
+</head>
+<body>
+	<div>
+		<div>이름 : <input type="text" id="name" name="name"></div>
+		<div>전화번호 : <input type="text" id="phone" name="phone"></div>
+		<button onclick="showInfo()">정보보기</button>
+		<div id="result_area">
+		</div>
+	</div>
+</body>
+<script>
+	var showInfo = function() {
+		let name = document.getElementById('name');
+		let phone = document.getElementById('phone');
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'data/test');
+		xhr.setRequestHeader('Content-Type', 'application/json')
+		let data = {name: name.value, phone: phone.value};
+		xhr.send(JSON.stringify(data));
+		
+		xhr.onreadystatechange = function(e) {
+			console.log(xhr.responseText);
+			document.getElementById('result_area').innerHTML = xhr.responseText;
+		}
+	}
+</script>
+</html>
